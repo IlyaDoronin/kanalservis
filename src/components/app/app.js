@@ -7,7 +7,7 @@ import "./app.sass";
 
 export const App = () => {
     return (
-        <div>
+        <div className="container">
             <Routes>
                 <Route path="/table/:page" element={<Table />} />
 
