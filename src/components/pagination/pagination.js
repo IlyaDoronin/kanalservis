@@ -1,13 +1,9 @@
 import React from "react";
-import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
 import "./pagination.sass";
 
-export const Pagination = ({ amount }) => {
-    // Узнаем текущую страницу из урла
-    const { page } = useParams();
-
+export const Pagination = ({ amount, page }) => {
     const pageNumbers = [];
     // Создания массива страниц
     for (let i = 1; i <= amount; i++) {

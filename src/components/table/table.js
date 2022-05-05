@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import { useParams } from "react-router";
 import { Navigate } from "react-router-dom";
-
 import { Record } from "../record";
 import { Pagination } from "../pagination";
+import { Filtration } from "../filtration";
 
-import axios from "axios";
+import { filtration, columns, conditions } from "../../utils/filtration";
 
 import "./table.sass";
 
 export const Table = () => {
     // Поля таблицы
     const [records, setRecords] = useState([]);
+    // Отфильтрованные поля таблицы
+    const [filteredRecords, setFilteredRecords] = useState([]);
     // Колличество отображаемых записей на одной странице
-    const [recordsAmount, setRecordsAmount] = useState(4);
+    const [recordsAmount, setRecordsAmount] = useState(6);
+    // Значение из инпута
+    const [value, setValue] = useState(columns.name);
+    // Состояние хранящие название колонки, по которой будет фильтрация
+    const [column, setColumn] = useState(columns.name);
+    // Состояние хранящие условие, по которому будет фильтрация
+    const [condition, setCondition] = useState(conditions.contain);
     // Берём номер страницы из урла
     const { page } = useParams();
 
@@ -21,6 +31,7 @@ export const Table = () => {
     const getData = async () => {
         const { data } = await axios.get("http://localhost:3000/table");
         setRecords(data);
+        setFilteredRecords(data);
     };
 
     useEffect(() => {
@@ -31,8 +42,24 @@ export const Table = () => {
     // Если номер не целое число, перенаправляем пользователя на основную страницу
     if (!Number.isInteger(+page)) return <Navigate to="/table/1" />;
 
+    // Фильтрация записей
+    const filterRecords = () => {
+        const filtered = filtration(records, column, condition, value);
+        // Массив отфильтрованных записей
+        setFilteredRecords(filtered);
+    };
+
     return (
         <section>
+            <Filtration
+                value={value}
+                setValue={setValue}
+                column={column}
+                setColumn={setColumn}
+                condition={condition}
+                setCondition={setCondition}
+                onClick={filterRecords}
+            />
             <div
                 className="record"
                 style={{
@@ -46,7 +73,8 @@ export const Table = () => {
                 <div className="record__item">Количество</div>
                 <div className="record__item">Расстояние</div>
             </div>
-            {records
+            {/* Обрезание и перебор массива записей в зависемости от текущей страницы */}
+            {filteredRecords
                 .slice(
                     (page - 1) * recordsAmount,
                     (page - 1) * recordsAmount + recordsAmount
@@ -54,7 +82,10 @@ export const Table = () => {
                 .map((record) => (
                     <Record key={record.id} record={record} />
                 ))}
-            <Pagination amount={(records.length / recordsAmount).toFixed()} />
+            <Pagination
+                amount={Math.ceil(filteredRecords.length / recordsAmount)}
+                page={page}
+            />
         </section>
     );
 };
