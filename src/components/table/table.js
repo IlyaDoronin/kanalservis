@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { Navigate } from "react-router-dom";
 
 import { Record } from "../record";
+import { Pagination } from "../pagination";
 
 import axios from "axios";
 
@@ -11,12 +12,14 @@ import "./table.sass";
 export const Table = () => {
     // Поля таблицы
     const [records, setRecords] = useState([]);
+    // Колличество отображаемых записей на одной странице
+    const [recordsAmount, setRecordsAmount] = useState(4);
     // Берём номер страницы из урла
     const { page } = useParams();
 
     // Запрос данных таблицы у сервера
     const getData = async () => {
-        const { data } = await axios.get("http://localhost:3000/table/" + page);
+        const { data } = await axios.get("http://localhost:3000/table");
         setRecords(data);
     };
 
@@ -32,16 +35,26 @@ export const Table = () => {
         <section>
             <div
                 className="record"
-                style={{ color: "#fff", background: "#7f8c8d", marginBottom: '1rem' }}
+                style={{
+                    color: "#fff",
+                    background: "#7f8c8d",
+                    marginBottom: "1rem",
+                }}
             >
                 <div className="record__item">Дата</div>
                 <div className="record__item">Название</div>
-                <div className="record__item">Колличество</div>
+                <div className="record__item">Количество</div>
                 <div className="record__item">Расстояние</div>
             </div>
-            {records.map((record) => (
-                <Record key={record.id} record={record} />
-            ))}
+            {records
+                .slice(
+                    (page - 1) * recordsAmount,
+                    (page - 1) * recordsAmount + recordsAmount
+                )
+                .map((record) => (
+                    <Record key={record.id} record={record} />
+                ))}
+            <Pagination amount={(records.length / recordsAmount).toFixed()} />
         </section>
     );
 };
