@@ -19,7 +19,7 @@ export const Table = () => {
     // Колличество отображаемых записей на одной странице
     const [recordsAmount, setRecordsAmount] = useState(6);
     // Значение из инпута
-    const [value, setValue] = useState(columns.name);
+    const [value, setValue] = useState("");
     // Состояние хранящие название колонки, по которой будет фильтрация
     const [column, setColumn] = useState(columns.name);
     // Состояние хранящие условие, по которому будет фильтрация
