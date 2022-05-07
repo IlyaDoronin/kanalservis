@@ -29,21 +29,25 @@ export const filtration = (
 
     const filteredRecords = [];
     if (value) {
-        // Филтрация массива запискей
+        // Филтрация по заданным условиям
         records.forEach((record) => {
             switch (condition) {
+                // Равно
                 case conditions.equals:
                     if (record[column] == value)
                         return filteredRecords.push(record);
                     return;
+                // Содержит
                 case conditions.contain:
                     if (record[column].toString().includes(value))
                         return filteredRecords.push(record);
                     return;
+                // Меньше
                 case conditions.smaller:
                     if (+record[column] < +value)
                         return filteredRecords.push(record);
                     return;
+                // Больше
                 case conditions.more:
                     if (+record[column] > +value)
                         return filteredRecords.push(record);
