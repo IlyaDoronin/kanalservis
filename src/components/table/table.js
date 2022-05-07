@@ -23,7 +23,7 @@ export const Table = () => {
     // Состояние хранящие название колонки, по которой будет фильтрация
     const [column, setColumn] = useState(columns.name);
     // Состояние хранящие условие, по которому будет фильтрация
-    const [condition, setCondition] = useState(conditions.contain);
+    const [condition, setCondition] = useState(conditions.equals);
     // Берём номер страницы из урла
     const { page } = useParams();
 

@@ -15,7 +15,7 @@ const columnItems = [
 const conditionItems = [
     { id: 0, param: conditions.equals, text: "Равно" },
     { id: 1, param: conditions.contain, text: "Содержит" },
-    { id: 2, param: conditions.samaller, text: "Меньше" },
+    { id: 2, param: conditions.smaller, text: "Меньше" },
     { id: 3, param: conditions.more, text: "Больше" },
 ];
 
@@ -30,6 +30,20 @@ export const Filtration = ({
 }) => {
     return (
         <div className="filtration">
+            <Dropdown
+                title="Колонки"
+                name="columns"
+                items={columnItems}
+                getter={column}
+                setter={setColumn}
+            />
+            <Dropdown
+                title="Условия"
+                name="condition"
+                items={conditionItems}
+                getter={condition}
+                setter={setCondition}
+            />
             <input
                 className="filtration__input"
                 type="text"
@@ -37,19 +51,9 @@ export const Filtration = ({
                 placeholder="Введите значение..."
                 onChange={(e) => setValue(e.target.value)}
             />
-            <Dropdown
-                title="Колонки"
-                name="columns"
-                items={columnItems}
-                setter={setColumn}
-            />
-            <Dropdown
-                title="Условия"
-                name="condition"
-                items={conditionItems}
-                setter={setCondition}
-            />
-            <button onClick={onClick}>Отфильтровать</button>
+            <button className="filtration__button" onClick={onClick}>
+                Отфильтровать
+            </button>
         </div>
     );
 };

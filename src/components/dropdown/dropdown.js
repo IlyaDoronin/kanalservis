@@ -1,10 +1,13 @@
 import React from "react";
 
+import { DropdownItem } from "./dropdownItem";
+
 import "./dropdown.sass";
 
 // name - называние панели для корректной работы radio-баттонов
+// getter - state
 // setter - setState
-export const Dropdown = ({ title, name, items, setter }) => {
+export const Dropdown = ({ title, name, items, getter, setter }) => {
     const clickHandler = (param) => setter(param);
 
     return (
@@ -12,21 +15,15 @@ export const Dropdown = ({ title, name, items, setter }) => {
             <h5 className="dropdown__title">{title}</h5>
             <div className="dropdown__items">
                 {items.map(({ id, param, text }) => (
-                    <div
-                        className="dropdown__item"
+                    <DropdownItem
                         key={id}
-                        onClick={() => clickHandler(param)}
-                    >
-                        <input
-                            id={param + id}
-                            name={name}
-                            className="dropdown__radio"
-                            type="radio"
-                        />
-                        <label className="dropdown__text" htmlFor={param + id}>
-                            {text}
-                        </label>
-                    </div>
+                        id={id}
+                        name={name}
+                        getter={getter}
+                        param={param}
+                        text={text}
+                        onClick={clickHandler}
+                    />
                 ))}
             </div>
         </div>
