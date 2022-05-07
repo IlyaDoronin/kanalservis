@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useParams } from "react-router";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Record } from "../record";
 import { Pagination } from "../pagination";
 import { Filtration } from "../filtration";
@@ -12,6 +12,7 @@ import { filtration, columns, conditions } from "../../utils/filtration";
 import "./table.sass";
 
 export const Table = () => {
+    const navigate = useNavigate();
     // Поля таблицы
     const [records, setRecords] = useState([]);
     // Отфильтрованные поля таблицы
@@ -47,6 +48,8 @@ export const Table = () => {
         const filtered = filtration(records, column, condition, value);
         // Массив отфильтрованных записей
         setFilteredRecords(filtered);
+        // Редирект на главную страницу
+        navigate(-1);
     };
 
     return (

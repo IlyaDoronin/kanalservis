@@ -39,7 +39,12 @@ export const filtration = (
                     return;
                 // Содержит
                 case conditions.contain:
-                    if (record[column].toString().includes(value))
+                    if (
+                        record[column]
+                            .toString()
+                            .toLowerCase()
+                            .includes(value.toLowerCase())
+                    )
                         return filteredRecords.push(record);
                     return;
                 // Меньше
@@ -58,6 +63,7 @@ export const filtration = (
             }
         });
     }
+
     // Если значение для фильтрации пустое, возвращем все значения
     return value ? filteredRecords : records;
 };

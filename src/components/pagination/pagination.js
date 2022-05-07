@@ -16,7 +16,12 @@ export const Pagination = ({ amount, page }) => {
                 <Link
                     key={num}
                     className="pagination__item"
-                    style={{ background: num == page && "#1dd1a1" }}
+                    style={{
+                        background:
+                            num == page
+                                ? "#1dd1a1"
+                                : "rgba(131, 149, 167, 0.5)",
+                    }}
                     to={"/table/" + num}
                 >
                     {num}
