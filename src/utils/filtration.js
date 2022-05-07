@@ -2,7 +2,7 @@
 export const conditions = {
     equals: "equals",
     contain: "contain",
-    samaller: "samaller",
+    smaller: "smaller",
     more: "more",
 };
 
@@ -25,5 +25,35 @@ export const filtration = (
     condition = conditions.equals,
     value = ""
 ) => {
-    return records;
+    // Если есть текст для фильтрации, делаем фильтрацию
+
+    const filteredRecords = [];
+    if (value) {
+        // Филтрация массива запискей
+        records.forEach((record) => {
+            switch (condition) {
+                case conditions.equals:
+                    if (record[column] == value)
+                        return filteredRecords.push(record);
+                    return;
+                case conditions.contain:
+                    if (record[column].toString().includes(value))
+                        return filteredRecords.push(record);
+                    return;
+                case conditions.smaller:
+                    if (+record[column] < +value)
+                        return filteredRecords.push(record);
+                    return;
+                case conditions.more:
+                    if (+record[column] > +value)
+                        return filteredRecords.push(record);
+                    return;
+
+                default:
+                    return null;
+            }
+        });
+    }
+    // Если значение для фильтрации пустое, возвращем все значения
+    return value ? filteredRecords : records;
 };
